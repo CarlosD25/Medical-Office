@@ -14,4 +14,6 @@ public interface DoctorService {
     DoctorDTO update(Long id, DoctorDTO doctorDto);
     void delete(Long id);
     List<DoctorDTO> findBySpecialty(String specialty);
+    boolean hasAppointmentsInTimeRange(Long doctorId, LocalDateTime startTime, LocalDateTime endTime);
+    boolean isWithinDoctorSchedule(Long doctorId, LocalDateTime startTime, LocalDateTime endTime);
 }

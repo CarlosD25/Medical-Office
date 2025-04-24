@@ -3,15 +3,17 @@ package com.unimag.consultoriomedico.service.impl;
 import com.unimag.consultoriomedico.dto.AppointmentDTO;
 import com.unimag.consultoriomedico.dto.DoctorDTO;
 import com.unimag.consultoriomedico.exception.ResourceNotFoundException;
+import com.unimag.consultoriomedico.exception.TimeConflictException;
 import com.unimag.consultoriomedico.mapper.DoctorMapper;
 import com.unimag.consultoriomedico.model.Doctor;
 import com.unimag.consultoriomedico.repository.DoctorRepository;
 import com.unimag.consultoriomedico.service.DoctorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.ReflectiveScan;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +65,25 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<DoctorDTO> findBySpecialty(String specialty) {
         return doctorRepository.findBySpecialtyIgnoreCase(specialty).stream().map(doctorMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean hasAppointmentsInTimeRange(Long doctorId, LocalDateTime startTime, LocalDateTime endTime) {
+        if(doctorRepository.hasAppointmentsInTimeRange(doctorId, startTime, endTime)){
+            throw new TimeConflictException("Doctor has appointments in time range");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isWithinDoctorSchedule(Long doctorId, LocalDateTime startTime, LocalDateTime endTime) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found: " + doctorId));
+
+        LocalTime start = startTime.toLocalTime();
+        LocalTime end = endTime.toLocalTime();
+
+        return !start.isBefore(doctor.getAvaliableFrom().toLocalTime()) && !end.isAfter(doctor.getAvaliableTo().toLocalTime());
     }
 
 }

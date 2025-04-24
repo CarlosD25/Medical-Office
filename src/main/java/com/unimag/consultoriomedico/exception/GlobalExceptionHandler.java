@@ -60,4 +60,25 @@ public class GlobalExceptionHandler {
                 build();
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(InvalidAppointmentDurationException.class)
+    public ResponseEntity<ApiError> handleInvalidAppointmentDurationException(InvalidAppointmentDurationException ex) {
+        ApiError apiError = ApiError.builder().
+                timestamp(LocalDateTime.now()).
+                status(HttpStatus.NOT_ACCEPTABLE.value()).
+                message(ex.getMessage()).
+                build();
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_ACCEPTABLE);
+
+    }
+
+    @ExceptionHandler(InvalidAppointmentStatusException.class)
+    public ResponseEntity<ApiError> handleInvalidAppoimentStatusException(InvalidAppointmentStatusException ex){
+        ApiError apiError = ApiError.builder().
+                timestamp(LocalDateTime.now()).
+                status(HttpStatus.NOT_ACCEPTABLE.value()).
+                message(ex.getMessage()).
+                build();
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_ACCEPTABLE);
+    }
 }

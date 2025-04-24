@@ -2,6 +2,7 @@ package com.unimag.consultoriomedico.service;
 
 import com.unimag.consultoriomedico.dto.ConsultRoomDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ConsultRoomService {
@@ -10,4 +11,5 @@ public interface ConsultRoomService {
     ConsultRoomDTO save(ConsultRoomDTO roomDto);
     ConsultRoomDTO update(Long id, ConsultRoomDTO roomDto);
     void delete(Long id);
+    boolean consultRoomHasAppointment(Long roomId, LocalDateTime startTime, LocalDateTime endTime);
 }

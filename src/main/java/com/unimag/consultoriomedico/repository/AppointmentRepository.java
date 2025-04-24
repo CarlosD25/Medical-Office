@@ -14,5 +14,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     Optional<Appointment> findByAppointmentId(Long appointmentId);
 
+    boolean isValidAppointmentDuration(LocalDateTime startTime, LocalDateTime endTime);
 
 }
