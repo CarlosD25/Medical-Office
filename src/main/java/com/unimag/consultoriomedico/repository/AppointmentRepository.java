@@ -3,16 +3,16 @@ package com.unimag.consultoriomedico.repository;
 import com.unimag.consultoriomedico.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    List<Appointment> findByConsultRoomIdAndStartTimeBetween(Long roomId, LocalDateTime start, LocalDateTime end);
+    List<Appointment> findByDoctorIdAndDate(Long doctorId, LocalDate date);
 
-    List<Appointment> findByDoctorIdAndStartTimeBetweenOrderByStartTime(Long doctorId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+    Optional<Appointment> findByAppointmentId(Long appointmentId);
 
-    boolean existsByDoctorIdAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(Long doctorId, LocalDateTime endTime, LocalDateTime startTime);
 
-    boolean existsByConsultRoomIdAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(Long roomId, LocalDateTime endTime, LocalDateTime startTime);
 }
