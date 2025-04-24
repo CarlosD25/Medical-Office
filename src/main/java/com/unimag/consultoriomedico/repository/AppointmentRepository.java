@@ -16,4 +16,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     boolean isValidAppointmentDuration(LocalDateTime startTime, LocalDateTime endTime);
 
+    List<Appointment> findAppointmentsByDoctorAndDate(Long doctorId, LocalDate date);
+
 }

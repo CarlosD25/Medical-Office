@@ -1,6 +1,7 @@
 package com.unimag.consultoriomedico.service.impl;
 
 import com.unimag.consultoriomedico.dto.AppointmentDTO;
+import com.unimag.consultoriomedico.dto.DoctorDTO;
 import com.unimag.consultoriomedico.exception.*;
 import com.unimag.consultoriomedico.mapper.AppointmentMapper;
 import com.unimag.consultoriomedico.model.Appointment;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +66,10 @@ public class AppoinmentServiceImpl implements AppoinmentService {
 
         if (!doctorRepository.isWithinDoctorSchedule(doctorId, startTime, endTime)) {
             throw new InvalidAppointmentTimeException("Appointment is outside the doctor's working hours");
+        }
+
+        if(checkPointStatus(appointmentDto.getId())!=Status.SCHEDULED){
+            throw new InvalidAppointmentStatusException("Appointment is not scheduled");
         }
 
         return appointmentMapper.toDTO(appointmentRepository.save(appointmentMapper.toEntity(appointmentDto)));
@@ -145,5 +151,21 @@ public class AppoinmentServiceImpl implements AppoinmentService {
     @Override
     public Status checkPointStatus(Long id) {
         return appointmentRepository.findById(id).map(Appointment::getStatus).orElseThrow(() -> new ResourceNotFoundException("Appointment not found "+id));
+    }
+
+    @Override
+    public void delete(Long id) {
+        if(!appointmentRepository.existsById(id)){
+            throw new ResourceNotFoundException("Appointment not found "+id);
+        }
+        appointmentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<AppointmentDTO> findAppointmentsByDoctorAndDate(Long doctorId, LocalDate date) {
+        if(!doctorRepository.existsById(doctorId)){
+            throw new ResourceNotFoundException("Doctor not found "+doctorId);
+        }
+        return appointmentRepository.findAppointmentsByDoctorAndDate(doctorId,date).stream().map(appointmentMapper::toDTO).collect(Collectors.toList());
     }
 }

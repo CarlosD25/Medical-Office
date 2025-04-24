@@ -1,6 +1,7 @@
 package com.unimag.consultoriomedico.service.impl;
 
 import com.unimag.consultoriomedico.dto.MedicalRecordDTO;
+import com.unimag.consultoriomedico.dto.PatientDTO;
 import com.unimag.consultoriomedico.exception.MedicalRecordCreationException;
 import com.unimag.consultoriomedico.exception.ResourceNotFoundException;
 import com.unimag.consultoriomedico.mapper.MedicalRecordMapper;
@@ -67,5 +68,17 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
         return appointment.get().getStatus()== Status.COMPLETED;
 
+    }
+
+    @Override
+    public MedicalRecordDTO update(Long id, MedicalRecordDTO MedicalRecordDTO) {
+        if(!medicalRecordRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Medical Record not found "+id);
+        }
+        MedicalRecord medicalRecord = medicalRecordRepository.getReferenceById(id);
+        medicalRecord.setDiagnosis(medicalRecord.getDiagnosis());
+        medicalRecord.setNotes(medicalRecord.getNotes());
+        medicalRecord.setCreatedAt(medicalRecord.getCreatedAt());
+        return medicalRecordMapper.toDTO(medicalRecordRepository.save(medicalRecord));
     }
 }

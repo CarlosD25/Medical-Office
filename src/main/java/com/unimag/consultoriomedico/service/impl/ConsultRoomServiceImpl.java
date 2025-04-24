@@ -2,6 +2,7 @@ package com.unimag.consultoriomedico.service.impl;
 
 import com.unimag.consultoriomedico.dto.ConsultRoomDTO;
 import com.unimag.consultoriomedico.exception.ResourceNotFoundException;
+import com.unimag.consultoriomedico.exception.TimeConflictException;
 import com.unimag.consultoriomedico.mapper.ConsultRoomMapper;
 import com.unimag.consultoriomedico.model.ConsultRoom;
 import com.unimag.consultoriomedico.repository.ConsultRoomRepository;
@@ -9,6 +10,7 @@ import com.unimag.consultoriomedico.service.ConsultRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,5 +54,13 @@ public class ConsultRoomServiceImpl implements ConsultRoomService {
             throw new ResourceNotFoundException("ConsultRoomDTO not found "+id);
         }
         consultRoomRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean consultRoomHasAppointment(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
+        if(consultRoomRepository.consultRoomHasAppointment(roomId, startTime, endTime)){
+            throw new TimeConflictException("ConsultRoom has appointments in time range");
+        }
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.unimag.consultoriomedico.service;
 
 import com.unimag.consultoriomedico.dto.MedicalRecordDTO;
+import com.unimag.consultoriomedico.dto.PatientDTO;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface MedicalRecordService {
     MedicalRecordDTO create(MedicalRecordDTO recordDto);
     void delete(Long id);
     boolean isAppointmentCompleted(Long appointmentId);
+    MedicalRecordDTO update(Long id, MedicalRecordDTO medicalRecordDTO);
 }
