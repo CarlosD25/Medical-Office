@@ -1,7 +1,6 @@
 package com.unimag.consultoriomedico.service.impl;
 
 import com.unimag.consultoriomedico.dto.AppointmentDTO;
-import com.unimag.consultoriomedico.dto.DoctorDTO;
 import com.unimag.consultoriomedico.exception.*;
 import com.unimag.consultoriomedico.mapper.AppointmentMapper;
 import com.unimag.consultoriomedico.model.Appointment;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -162,10 +160,11 @@ public class AppoinmentServiceImpl implements AppoinmentService {
     }
 
     @Override
-    public List<AppointmentDTO> findAppointmentsByDoctorAndDate(Long doctorId, LocalDate date) {
+    public List<AppointmentDTO> findAppointmentsByDoctorIdAndStartTimeBetween(Long doctorId, LocalDateTime start, LocalDateTime end){
+
         if(!doctorRepository.existsById(doctorId)){
             throw new ResourceNotFoundException("Doctor not found "+doctorId);
         }
-        return appointmentRepository.findAppointmentsByDoctorAndDate(doctorId,date).stream().map(appointmentMapper::toDTO).collect(Collectors.toList());
+        return appointmentRepository.findByDoctorIdAndStartAndEndTimeBetween(doctorId,start,end).stream().map(appointmentMapper::toDTO).collect(Collectors.toList());
     }
 }

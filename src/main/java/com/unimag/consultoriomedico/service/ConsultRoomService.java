@@ -7,9 +7,14 @@ import java.util.List;
 
 public interface ConsultRoomService {
     List<ConsultRoomDTO> findAll();
+
     ConsultRoomDTO findById(Long id);
+
     ConsultRoomDTO save(ConsultRoomDTO roomDto);
+
     ConsultRoomDTO update(Long id, ConsultRoomDTO roomDto);
+
     void delete(Long id);
-    boolean consultRoomHasAppointment(Long roomId, LocalDateTime startTime, LocalDateTime endTime);
+
+    boolean hasAppointmentBetween(Long roomId, LocalDateTime startTime, LocalDateTime endTime);
 }

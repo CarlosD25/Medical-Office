@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,11 +28,6 @@ public class AppointmentController {
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(appoinmentService.findById(id));
-    }
-
-    @GetMapping(params = {"doctorId", "date"})
-    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByDoctorAndDate(@RequestParam Long doctorId, @RequestParam LocalDate date){
-        return ResponseEntity.ok(appoinmentService.findAppointmentsByDoctorAndDate(doctorId,date));
     }
 
     @PostMapping

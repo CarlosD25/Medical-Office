@@ -76,7 +76,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public boolean isWithinDoctorSchedule(Long doctorId, LocalDateTime startTime, LocalDateTime endTime) {
+    public boolean isWithinSchedule(Long doctorId, LocalDateTime startTime, LocalDateTime endTime) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found: " + doctorId));
 

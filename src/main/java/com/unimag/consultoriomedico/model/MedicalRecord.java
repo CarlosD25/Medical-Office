@@ -34,6 +34,5 @@ public class MedicalRecord {
 
     private String notes;
 
-    @Future
     private LocalTime createdAt;
 }

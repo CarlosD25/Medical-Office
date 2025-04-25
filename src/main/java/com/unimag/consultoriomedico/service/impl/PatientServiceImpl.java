@@ -41,12 +41,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO update(Long id, PatientDTO patientDto) {
-        if(!patientRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Patient not found with id " + id);
-        }
-        Optional<Patient> patientOptional = patientRepository.findById(id);
-
-        Patient patient = patientOptional.get();
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id " + id));
 
         patient.setFullName(patientDto.getFullName());
         patient.setEmail(patientDto.getEmail());

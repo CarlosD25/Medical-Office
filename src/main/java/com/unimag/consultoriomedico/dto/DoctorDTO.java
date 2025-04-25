@@ -36,6 +36,5 @@ public class DoctorDTO {
     @Future
     private LocalDateTime avaliableTo;
 
-    private Set<AppointmentDTO> appointmentsDTO;
 
 }

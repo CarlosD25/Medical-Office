@@ -57,7 +57,7 @@ public class ConsultRoomServiceImpl implements ConsultRoomService {
     }
 
     @Override
-    public boolean consultRoomHasAppointment(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
+    public boolean hasAppointmentBetween(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
         if(consultRoomRepository.consultRoomHasAppointment(roomId, startTime, endTime)){
             throw new TimeConflictException("ConsultRoom has appointments in time range");
         }

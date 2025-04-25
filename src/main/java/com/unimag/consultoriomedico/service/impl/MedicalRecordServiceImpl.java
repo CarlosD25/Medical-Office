@@ -62,7 +62,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 
     @Override
     public boolean isAppointmentCompleted(Long appointmentId) {
-        Optional<Appointment> appointment = appointmentRepository.findByAppointmentId(appointmentId);
+        Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
         if(!appointment.isPresent()) {
             throw new ResourceNotFoundException("Appointment not found");
         }
